@@ -22,6 +22,7 @@ Features
 * Creates ID3 tags for the episode
 * Checks for duplicated episodes
 * Checks for folders
+* Creates a folder per Year
 
 Usage
 ---
@@ -39,7 +40,6 @@ Options:
                         the newest ones ;-).
   -o OUTDIR, --outdir=OUTDIR
                         Specify directory to store episodes to.
-  -u UID, --uid=UID     Download a single episode by providing SRF stream UID.
   -v, --verbose         Enable verbose.
 ```
 
