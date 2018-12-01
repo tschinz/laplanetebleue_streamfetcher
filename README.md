@@ -1,6 +1,8 @@
 [La Planète Bleue Streamfetcher](https://github.com/tschinz/laplanetebleue_streamfetcher)
 ================================
 
+![La Planète Bleue](https://laplanetebleue.com/images/lpb5-moebius.jpg)
+
 This Python script let your download the latest La Planète Bleue Episodes from the [La Planète Bleue Website](https://laplanetebleue.com/podcast).
 
 Requirements
@@ -55,8 +57,6 @@ crontab -e
 ```bash
 0 * * * 1 python /location/to/lpb_streamfetcher.py -l -o /location/to/musicfiles
 ```
-
-![La Planète Bleue](https://laplanetebleue.com/images/lpb5-moebius.jpg)
 
 Versions Log
 ---
