@@ -11,6 +11,9 @@ from datetime import date
 from bs4 import BeautifulSoup
 import urllib.request
 from urllib.parse import urlparse
+import mutagen.mp3
+import mutagen.id3
+
 #-------------------------------------------------------------------------------
 # Class Maloney Download
 #
@@ -106,18 +109,20 @@ class lpb_download:
     '''
     Write Basic ID3 Tags
     '''
-    path_to_mid3v2   = "python " + self.path+"/mid3v2.py"
+    # Read ID3 tag or create it if not present
+    try:
+      tags = mutagen.id3.ID3(filepath)
+    except mutagen.id3.ID3NoHeaderError:
+      tags = mutagen.id3.ID3()
+
     self.log("  Adding ID3 Tags...")
-    command = ("{} -t \"{}\" \"{}\"").format(path_to_mid3v2, episode_data["mp3_name"][:-4], filepath)
-    self.system_command(command)
-    command = ("{} -A \"{}\" \"{}\"").format(path_to_mid3v2, episode_data["album"], filepath)
-    self.system_command(command)
-    command = ("{} -a \"{}\" \"{}\"").format(path_to_mid3v2, episode_data["artist"], filepath)
-    self.system_command(command)
-    command = ("{} -g \"{}\" \"{}\"").format(path_to_mid3v2, episode_data["genre"], filepath)
-    self.system_command(command)
-    command = ("{} -y \"{}\" \"{}\"").format(path_to_mid3v2, episode_data["year"], filepath)
-    self.system_command(command)
+    tags["TIT2"] = mutagen.id3.TIT2(encoding=3, text=episode_data["mp3_name"][:-4])
+    tags["TALB"] = mutagen.id3.TALB(encoding=3, text=episode_data["album"])
+    tags["TPE1"] = mutagen.id3.TPE1(encoding=3, text=episode_data["artist"])
+    tags["TCON"] = mutagen.id3.TCON(encoding=3, text=episode_data["genre"])
+    tags["TDRC"] = mutagen.id3.TDRC(encoding=3, text=episode_data["year"])
+    tags["TRCK"] = mutagen.id3.TRCK(encoding=3, text=episode_data["nbr"])
+    tags.save(filepath)
 
   def get_fileinfo(self, mp3_url):
     '''
