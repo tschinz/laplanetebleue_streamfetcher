@@ -8,6 +8,11 @@ Requirements
 * ``Python 3.0`` but should be compatible with ``Python 2.x``
   * ``pycurl``
   * ``xml.dom``
+  * ``mutagen``
+  * ``argparse``
+  * ``urllib``
+  * ``BeautifulSoup``
+  * ``datetime``
 * ``mid3v2.py`` - For create the id3 tags
 
 On a Debian based Linux:
