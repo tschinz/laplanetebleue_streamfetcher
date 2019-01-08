@@ -1,6 +1,8 @@
 [La Planète Bleue Streamfetcher](https://github.com/tschinz/laplanetebleue_streamfetcher)
 ================================
 
+![La Planète Bleue](https://laplanetebleue.com/images/lpb5-moebius.jpg)
+
 This Python script let your download the latest La Planète Bleue Episodes from the [La Planète Bleue Website](https://laplanetebleue.com/podcast).
 
 Requirements
@@ -27,6 +29,7 @@ Features
 * Creates ID3 tags for the episode
 * Checks for duplicated episodes
 * Checks for folders
+* Creates a folder per Year
 
 Usage
 ---
@@ -44,7 +47,6 @@ Options:
                         the newest ones ;-).
   -o OUTDIR, --outdir=OUTDIR
                         Specify directory to store episodes to.
-  -u UID, --uid=UID     Download a single episode by providing SRF stream UID.
   -v, --verbose         Enable verbose.
 ```
 
@@ -60,8 +62,6 @@ crontab -e
 ```bash
 0 * * * 1 python /location/to/lpb_streamfetcher.py -l -o /location/to/musicfiles
 ```
-
-![La Planète Bleue](https://laplanetebleue.com/images/lpb5-moebius.jpg)
 
 Versions Log
 ---
