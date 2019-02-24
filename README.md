@@ -15,11 +15,10 @@ Requirements
   * ``urllib``
   * ``BeautifulSoup``
   * ``datetime``
-* ``mid3v2.py`` - For create the id3 tags
 
 On a Debian based Linux:
 ```bash
-sudo apt-get install python3 python3-pycurl mid3v2
+sudo apt-get install python3 python3-pycurl
 ```
 
 Features
@@ -30,6 +29,7 @@ Features
 * Checks for duplicated episodes
 * Checks for folders
 * Creates a folder per Year
+* Add Cover image to id3 tags
 
 Usage
 ---

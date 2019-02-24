@@ -31,6 +31,7 @@ class lpb_download:
     self.verbose = verbose
     self.all     = download_all
     self.lpb_url = "https://laplanetebleue.com/podcast"
+    self.cover_image = "lpb.png"
 
     if outdir == None:
       self.outdir = "."
@@ -47,13 +48,13 @@ class lpb_download:
     if self.all:
       self.log("Downloading all available La Planète Bleue Episodes")
       for mp3_url in mp3_urls:             # Download all
-        self.download_episode(self.outdir, mp3_url)
+        self.download_episode(self.outdir, mp3_url, self.cover_image)
     else:                                  # Download only last
       self.log("Downloading only latest available La Planète Bleue Episode")
-      self.download_episode(self.outdir, mp3_urls[0])
+      self.download_episode(self.outdir, mp3_urls[0], self.cover_image)
 
 
-  def download_episode(self, outdir, mp3_url):
+  def download_episode(self, outdir, mp3_url, cover_image):
     '''
     Download and save mp3 file from url location
     '''
@@ -69,13 +70,17 @@ class lpb_download:
       os.mkdir(path)
 
     if os.path.isfile(filepath):
-      if int(os.path.getsize(filepath)) == int(urllib.request.urlopen(mp3_url[1]).getheader('content-length')):
-        download = True
-        self.log("  Episode {} was not correctly downloaded. Deleting and trying again.".format(filename))
-        os.remove(filepath)
-      else:
+      print("Filesize local {} <=> net {}".format(int(os.path.getsize(filepath)), int(urllib.request.urlopen(mp3_url[1]).getheader('content-length'))))
+      filesize_local = int(os.path.getsize(filepath))
+      filesize_web   = int(urllib.request.urlopen(mp3_url[1]).getheader('content-length'))
+      filesize_delta = 1000000
+      if ((filesize_local < (filesize_web+filesize_delta)) and (filesize_local > (filesize_web-filesize_delta))):
         self.log("  Episode \"{}\" already exists in the output folder {}".format(filename, path))
         self.log("    Skipping Episode ...")
+      else:
+        #download = True
+        self.log("  Episode {} was not correctly downloaded. Deleting and trying again.".format(filename))
+        #os.remove(filepath)
     else:
       download = True
     if download:
@@ -103,9 +108,9 @@ class lpb_download:
         print() ## Just add newline at the end
 
       # Write the ID3 Tags
-      self.write_id3(filepath, episode_data)
+      self.write_id3(filepath, episode_data, cover_image)
 
-  def write_id3(self, filepath, episode_data):
+  def write_id3(self, filepath, episode_data, cover_image):
     '''
     Write Basic ID3 Tags
     '''
@@ -122,6 +127,11 @@ class lpb_download:
     tags["TCON"] = mutagen.id3.TCON(encoding=3, text=episode_data["genre"])
     tags["TDRC"] = mutagen.id3.TDRC(encoding=3, text=episode_data["year"])
     tags["TRCK"] = mutagen.id3.TRCK(encoding=3, text=episode_data["nbr"])
+    self.log("  Adding Album Cover...")
+    cover_image_data = open(cover_image, 'rb').read()
+
+    tags["APIC"] = mutagen.id3.APIC(3, 'image/png', 3, 'Front cover', cover_image_data)
+
     tags.save(filepath)
 
   def get_fileinfo(self, mp3_url):
