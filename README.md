@@ -1,12 +1,12 @@
-[La Planète Bleue Streamfetcher](https://github.com/tschinz/laplanetebleue_streamfetcher)
-================================
+# [La Planète Bleue Streamfetcher](https://github.com/tschinz/laplanetebleue_streamfetcher)
+
 
 ![La Planète Bleue](https://laplanetebleue.com/images/lpb5-moebius.jpg)
 
 This Python script let your download the latest La Planète Bleue Episodes from the [La Planète Bleue Website](https://laplanetebleue.com/podcast).
 
-Requirements
----
+## Requirements
+
 * ``Python 3.0`` but should be compatible with ``Python 2.x``
   * ``pycurl``
   * ``xml.dom``
@@ -21,8 +21,8 @@ On a Debian based Linux:
 sudo apt-get install python3 python3-pycurl
 ```
 
-Features
----
+##Features
+
 * Lets you download all current episodes as MP3
 * Lets you download only the last episodes as MP3
 * Creates ID3 tags for the episode
@@ -31,8 +31,9 @@ Features
 * Creates a folder per Year
 * Add Cover image to id3 tags
 
-Usage
----
+## Usage
+
+### Commandline
 
 ```bash
 python lpb_streamfetcher.py -h
@@ -63,18 +64,37 @@ crontab -e
 0 * * * 1 python /location/to/lpb_streamfetcher.py -l -o /location/to/musicfiles
 ```
 
-Versions Log
----
+or you can also use the `Makefile`
+```bash
+make app
+```
+
+### Docker
+
+a `Makefile` is available to create the docker image and launch the docker container.
+
+```bash
+make image
+```
+
+```bash
+make container
+```
+
+## Versions Log
+
+- `v2.0`
+  * Dockerize application
 - `v1.0`
   * Initial Release
 
-Thanks
----
+## Thanks
+
   * Yves Blanc for an awesome Podcast since so many years.
   * Thanks for all who streams and contributes to La Planète Bleue
 
-Licensing
----
+## Licensing
+
 This document is under the [CC BY-NC-ND 3-0 License, Attribution-NonCommercial-NoDerivs 3.0 Unported](http://creativecommons.org/licenses/by-nc-nd/3.0/). Use this script at your own risc!
 
 The La Planète Bleue streams are copyright by [Yves Blanc](https://laplanetebleue.com). It is against the law to distribute the generated mp3 files!

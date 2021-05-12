@@ -9,7 +9,8 @@ PYTHON_INTERPRETER = python
 CONDA_ENV_FILE = condaenv.yml
 CONDA_ENV_NAME = laplanetebleue-env
 APP_ENTRY = src/lpb_streamfetcher.py
-IMAGE_NAME = laplanetebleue-streamfetcher
+IMAGE_NAME = lpb-image
+CONTAINER_NAME = lpb-container
 
 ifeq (,$(shell where conda))
 HAS_CONDA=False
@@ -48,8 +49,8 @@ image:  ## Build docker image
 
 container: ## Start image as container
 	@docker container rm -f $(IMAGE_NAME)
-	@echo ">>> Application started, image name: $(IMAGE_NAME)"
-	@docker run --name $(IMAGE_NAME) $(IMAGE_NAME)
+	@echo ">>> Application started. $(IMAGE_NAME) as $(CONTAINER_NAME)"
+	@docker run -d -v //c/data:/data --name $(CONTAINER_NAME) $(IMAGE_NAME)
 
 env: ## Set up conda environment
 ifeq (True,$(HAS_CONDA))

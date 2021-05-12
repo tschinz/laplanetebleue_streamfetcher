@@ -1,0 +1,40 @@
+FROM python:3.8-slim-buster AS runtime-image
+MAINTAINER tschinz
+
+# Update and install git
+RUN apt-get update && apt-get install -y --no-install-recommends git cron libcurl4-openssl-dev libssl-dev build-essential
+
+# Create and install crontab
+COPY crontab /etc/cron.d/crontab
+RUN chmod 0644 /etc/cron.d/crontab &&\
+    crontab /etc/cron.d/crontab
+
+ARG dest=/usr/src/app
+
+# Create the application directories
+RUN mkdir $dest
+WORKDIR $dest
+RUN mkdir ./src
+RUN mkdir /data
+
+# Copy the rest of the codebase into the image
+COPY src/ ./src
+COPY index.py .
+COPY condaenv.yml /tmp/
+COPY requirements.txt /tmp/
+
+# Install python environment
+RUN pip install -r /tmp/requirements.txt
+
+## set environment variables
+
+# Keeps Python from generating .pyc files in the container
+ENV PYTHONDONTWRITEBYTECODE=1
+
+# Turns off buffering for easier container logging
+ENV PYTHONUNBUFFERED=1
+
+# Run command once at startup
+CMD ["python", "/usr/src/app/index.py", "-av", "-o", "/data"]
+# Dummy command to keep container in foreground and running
+CMD ["tail", "-f", "/dev/null"]

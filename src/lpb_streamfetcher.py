@@ -27,7 +27,7 @@ class lpb_download:
     self.verbose = verbose
     self.all     = download_all
     self.lpb_url = "https://laplanetebleue.com/podcast"
-    self.cover_image = "asset/lpb.png"
+    self.cover_image = "assets/lpb.png"
 
     if outdir == None:
       self.outdir = "./../out"

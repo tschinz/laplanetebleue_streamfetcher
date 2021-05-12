@@ -20,12 +20,19 @@ setup(
   license='MIT',
 
   package_data={
-    'src.dash': [
+    'src': [
       *glob_fix('src/', 'assets/**/*'),
     ]
   },
 
   install_requires=[
+    'beautifulsoup4',
+    'certifi',
+    'lxml',
+    'mutagen',
+    'pycurl',
+    'soupsieve',
+    'wincertstore'
   ],
 
 )
