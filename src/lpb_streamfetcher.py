@@ -14,13 +14,9 @@ from urllib.parse import urlparse
 import mutagen.mp3
 import mutagen.id3
 
-#-------------------------------------------------------------------------------
-# Class Maloney Download
-#
+
 class lpb_download:
-  '''
-  Downloads La Planète Bleue Episodes
-  '''
+  ''' Downloads La Planète Bleue Episodes '''
   verbose = False
 
   def __init__(self, verbose=False, outdir = None, download_all = True):
@@ -31,33 +27,33 @@ class lpb_download:
     self.verbose = verbose
     self.all     = download_all
     self.lpb_url = "https://laplanetebleue.com/podcast"
-    self.cover_image = "lpb.png"
+    self.cover_image = "asset/lpb.png"
 
     if outdir == None:
-      self.outdir = "."
-    elif os.path.isdir(outdir):
-      self.outdir = outdir
+      self.outdir = "./../out"
     else:
-      self.log("Given output directory doesn't exist")
-      return None
+      self.outdir = outdir
+    if not(os.path.isdir(self.outdir)):
+      os.mkdir(self.outdir)
 
     # Get page info
     page = self.curl_page(self.lpb_url)
     mp3_urls = self.parse_html(page)
 
     if self.all:
-      self.log("Downloading all available La Planète Bleue Episodes")
+      self.log("#######################################################")
+      self.log("# Downloading all available La Planète Bleue Episodes #")
+      self.log("#######################################################")
       for mp3_url in mp3_urls:             # Download all
         self.download_episode(self.outdir, mp3_url, self.cover_image)
     else:                                  # Download only last
-      self.log("Downloading only latest available La Planète Bleue Episode")
+      self.log("##############################################################")
+      self.log("# Downloading only latest available La Planète Bleue Episode #")
       self.download_episode(self.outdir, mp3_urls[0], self.cover_image)
 
 
   def download_episode(self, outdir, mp3_url, cover_image):
-    '''
-    Download and save mp3 file from url location
-    '''
+    '''Download and save mp3 file from url location'''
     # Get new episode data
     (filename_old, filename, date, nbr) = self.get_fileinfo(mp3_url)
     path = outdir + "/" + date[:4]
@@ -70,10 +66,10 @@ class lpb_download:
       os.mkdir(path)
 
     if os.path.isfile(filepath):
-      print("Filesize local {} <=> net {}".format(int(os.path.getsize(filepath)), int(urllib.request.urlopen(mp3_url[1]).getheader('content-length'))))
       filesize_local = int(os.path.getsize(filepath))
       filesize_web   = int(urllib.request.urlopen(mp3_url[1]).getheader('content-length'))
       filesize_delta = 1000000
+      #print("Filesize local {} <=> net {}".format(filesize_local, filesize_web))
       if ((filesize_local < (filesize_web+filesize_delta)) and (filesize_local > (filesize_web-filesize_delta))):
         self.log("  Episode \"{}\" already exists in the output folder {}".format(filename, path))
         self.log("    Skipping Episode ...")

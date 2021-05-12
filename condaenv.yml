@@ -1,0 +1,29 @@
+name: laplanetebleue-env
+channels:
+  - defaults
+  - conda-forge
+dependencies:
+  - beautifulsoup4=4.9.3=pyha847dfd_0
+  - bs4=4.9.3=hd3eb1b0_0
+  - ca-certificates=2021.4.13=haa95532_1
+  - certifi=2020.12.5=py39haa95532_0
+  - krb5=1.18.2=hc04afaa_0
+  - libcurl=7.71.1=h2a8f88b_1
+  - libiconv=1.15=h1df5818_7
+  - libssh2=1.9.0=h7a1dbc1_1
+  - libxml2=2.9.10=hb89e7f3_3
+  - libxslt=1.1.34=he774522_0
+  - lxml=4.6.3=py39h9b66d53_0
+  - mutagen=1.45.0=pyhd3deb0d_0
+  - openssl=1.1.1k=h2bbff1b_0
+  - pip=21.0.1=py39haa95532_0
+  - pycurl=7.43.0.6=py39h8b3b064_0
+  - python=3.9.4=h6244533_0
+  - setuptools=52.0.0=py39haa95532_0
+  - soupsieve=2.2.1=pyhd3eb1b0_0
+  - sqlite=3.35.4=h2bbff1b_0
+  - tzdata=2020f=h52ac0ba_0
+  - vc=14.2=h21ff451_1
+  - wheel=0.36.2=pyhd3eb1b0_0
+  - zlib=1.2.11=h62dcd97_4
+prefix: c:\Users\zas\anaconda3\envs\laplanetebleue-env
