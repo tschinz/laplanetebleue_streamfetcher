@@ -5,9 +5,9 @@ MAINTAINER tschinz
 RUN apt-get update && apt-get install -y --no-install-recommends git cron libcurl4-openssl-dev libssl-dev build-essential
 
 # Create and install crontab
-COPY crontab /etc/cron.d/crontab
-RUN chmod 0644 /etc/cron.d/crontab &&\
-    crontab /etc/cron.d/crontab
+COPY docker/crontab /etc/cron.d/crontab
+RUN chmod 0644 /etc/cron.d/crontab
+RUN /usr/bin/crontab /etc/cron.d/crontab
 
 ARG dest=/usr/src/app
 
@@ -20,8 +20,8 @@ RUN mkdir /data
 # Copy the rest of the codebase into the image
 COPY src/ ./src
 COPY index.py .
-COPY condaenv.yml /tmp/
-COPY requirements.txt /tmp/
+#COPY condaenv.yml /tmp/
+COPY docker/requirements.txt /tmp/
 
 # Install python environment
 RUN pip install -r /tmp/requirements.txt
@@ -35,6 +35,11 @@ ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
 # Run command once at startup
-CMD ["python", "/usr/src/app/index.py", "-av", "-o", "/data"]
+#CMD ["python", "/usr/src/app/index.py", "-av", "-o", "/data"]
 # Dummy command to keep container in foreground and running
-CMD ["tail", "-f", "/dev/null"]
+#CMD ["tail", "-f", "/dev/null"]
+
+# Setup entrypoint.sh
+COPY docker/docker-entrypoint.sh /
+RUN chmod +x /docker-entrypoint.sh
+ENTRYPOINT ["/docker-entrypoint.sh"]

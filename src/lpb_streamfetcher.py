@@ -39,17 +39,25 @@ class lpb_download:
     # Get page info
     page = self.curl_page(self.lpb_url)
     mp3_urls = self.parse_html(page)
+    today = date.today().strftime("%d.%m.%Y %Hh%M")
 
+    self.log("#######################################################")
+    self.log("# La Planète Bleue Streamfetcher - BEGIN")
+    self.log("#   " + today)
     if self.all:
-      self.log("#######################################################")
-      self.log("# Downloading all available La Planète Bleue Episodes #")
-      self.log("#######################################################")
+      self.log("#   Download all episodes")
+      self.log("#")
       for mp3_url in mp3_urls:             # Download all
         self.download_episode(self.outdir, mp3_url, self.cover_image)
     else:                                  # Download only last
-      self.log("##############################################################")
-      self.log("# Downloading only latest available La Planète Bleue Episode #")
+      self.log("#   Download only latest episodes")
+      self.log("#")
       self.download_episode(self.outdir, mp3_urls[0], self.cover_image)
+
+    self.log("#")
+    self.log("#   " + today)
+    self.log("# La Planète Bleue Streamfetcher - END")
+    self.log("#######################################################")
 
 
   def download_episode(self, outdir, mp3_url, cover_image):
@@ -71,8 +79,7 @@ class lpb_download:
       filesize_delta = 1000000
       #print("Filesize local {} <=> net {}".format(filesize_local, filesize_web))
       if ((filesize_local < (filesize_web+filesize_delta)) and (filesize_local > (filesize_web-filesize_delta))):
-        self.log("  Episode \"{}\" already exists in the output folder {}".format(filename, path))
-        self.log("    Skipping Episode ...")
+        self.log(" Skipping Episode \"{}\" already exists in the output folder {}".format(filename, path))
       else:
         #download = True
         self.log("  Episode {} was not correctly downloaded. Deleting and trying again.".format(filename))
@@ -140,8 +147,8 @@ class lpb_download:
     date = filename_orig[:11].replace("-", "").replace("_","")
     nbr = re.search(".*planete_(\d+)_.*", filename_orig).group(1)
     filename_new = "{} - La Planète Bleue - no {}.mp3".format(date, nbr)
-    self.log("Filename found: {}".format(filename_orig))
-    self.log("=> New Filename constructed: {}".format(filename_new))
+    #self.log("Filename found: {}".format(filename_orig))
+    #self.log("=> New Filename constructed: {}".format(filename_new))
     return (filename_orig, filename_new, date, nbr)
 
   def curl_page(self, url, decode=True):
@@ -172,12 +179,13 @@ class lpb_download:
         a = li.find('a')
         mp3_urls.append((a.get_text().strip(), a['href'].strip()))
 
-    if mp3_urls:
-      self.log("Found episodes to download:")
-      for mp3_url in mp3_urls:
-        self.log("    * {}: {}".format(mp3_url[0], mp3_url[1]))
-    else:
-      self.log("no Episodes found")
+    if False:
+      if mp3_urls:
+        self.log("Found episodes to download:")
+        for mp3_url in mp3_urls:
+          self.log("    * {}: {}".format(mp3_url[0], mp3_url[1]))
+      else:
+        self.log("no Episodes found")
     return(mp3_urls)
 
   def system_command(self, command):

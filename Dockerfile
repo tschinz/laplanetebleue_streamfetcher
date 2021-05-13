@@ -17,9 +17,9 @@ MAINTAINER tschinz
 RUN apt-get update && apt-get install -y --no-install-recommends cron libcurl4-openssl-dev libssl-dev
 
 # Create and install crontab
-COPY crontab /etc/cron.d/crontab
-RUN chmod 0644 /etc/cron.d/crontab &&\
-    crontab /etc/cron.d/crontab
+COPY docker/crontab /etc/cron.d/crontab
+RUN chmod 0644 /etc/cron.d/crontab
+RUN /usr/bin/crontab /etc/cron.d/crontab
 
 ARG dest=/usr/src/app
 
@@ -50,13 +50,12 @@ ENV PYTHONDONTWRITEBYTECODE=1
 # Turns off buffering for easier container logging
 ENV PYTHONUNBUFFERED=1
 
-
-
 # Run command once at startup
-CMD ["python", "/usr/src/app/index.py", "-av", "-o", "/data"]
+#CMD ["python", "/usr/src/app/index.py", "-av", "-o", "/data"]
 # Dummy command to keep container in foreground and running
-CMD ["tail", "-f", "/dev/null"]
+#CMD ["tail", "-f", "/dev/null"]
 
 # Setup entrypoint.sh
-#COPY docker-entrypoint.sh /usr/local/bin/
-#ENTRYPOINT ["docker-entrypoint.sh"]
+COPY docker/docker-entrypoint.sh /
+RUN chmod +x /docker-entrypoint.sh
+ENTRYPOINT ["/docker-entrypoint.sh"]

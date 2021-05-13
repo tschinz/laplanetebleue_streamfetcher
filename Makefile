@@ -33,10 +33,10 @@ endif
 lint: ## Lint the python package
 	@$(CONDA_ACTIVATE); pylint src
 
-app: ## Start application application
+app: ## Start application
 	@$(CONDA_ACTIVATE); python $(APP_ENTRY) -a -v
 
-app-node: ## Start application application
+app-node: ## Start application for storing on node server
 	@$(CONDA_ACTIVATE); python $(APP_ENTRY) -a -v -o '\\\\node.local\\multimedia\\Music\\Podcast\\La Planète Bleue\\'
 
 .ONESHELL:
@@ -50,7 +50,7 @@ image:  ## Build docker image
 container: ## Start image as container
 	@docker container rm -f $(IMAGE_NAME)
 	@echo ">>> Application started. $(IMAGE_NAME) as $(CONTAINER_NAME)"
-	@docker run -d -v //c/data:/data --name $(CONTAINER_NAME) $(IMAGE_NAME)
+	@docker run -v //c/data:/data --name $(CONTAINER_NAME) $(IMAGE_NAME)
 
 env: ## Set up conda environment
 ifeq (True,$(HAS_CONDA))
